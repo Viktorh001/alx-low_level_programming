@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
- * print_binary - write the binary equivalent of a decimal number
- * @n: number to write in binary
+ * print_binary - prints the binary similar of a decimal number
+ * @n: number to print in binary
  */
 void print_binary(unsigned long int n)
 {
@@ -13,7 +13,7 @@ void print_binary(unsigned long int n)
 	{
 		current = n >> i;
 
-		if (curreent & 1)
+		if (current & 1)
 		{
 			_putchar('1');
 			count++;
@@ -22,5 +22,5 @@ void print_binary(unsigned long int n)
 			_putchar('0');
 	}
 	if (!count)
-		_pitchar('0');
+		_putchar('0');
 }
