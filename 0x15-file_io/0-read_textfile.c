@@ -1,56 +1,28 @@
 #include "main.h"
 #include <stdlib.h>
 
+/**
+ * read_textfile- Read text file print to STDOUT.
+ * @filename: text file being read
+ * @letters: number of letters to be read
+ * Return: w- actual number of bytes read and printed
+ *        0 when function fails or filename is NULL.
+ */
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	if (filename == NULL)
+	char *buf;
+	ssize_t fd;
+	ssize_t w;
+	ssize_t t;
+
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
 		return (0);
+	buf = malloc(sizeof(char) * letters);
+	t = read(fd, buf, letters);
+	w = write(STDOUT_FILENO, buf, t);
 
-	FILE *file = fopen(filename, "r");
-	if (file == NULL)
-
-		return (0);
-
-	char *buffer = (char *)malloc(letters + 1);
-	if (buffer == NULL)
-	{
-		fclose(file);
-		return (0);
-	}
-
-	ssize_t bytesRead = fread(buffer, 1, letters, file);
-	if (bytesRead <= 0)
-	{
-		free(buffer);
-		fclose(file);
-		return (0);
-	}
-
-	buffer[bytesRead] = '\0';
-
-	ssize_t bytesWritten = write(STDOUT_FILENO, buffer, bytesRead);
-
-	free(buffer);
-	fclose(file);
-
-	if (bytesWritten != bytesRead)
-		return (0);
-
-	return (bytesRead);
+	free(buf);
+	close(fd);
+	return (w);
 }
-
-int main()
-{
-	ssize_t result = read_textfile("example.txt", 100);
-	if (result == 0)
-	{
-		fprintf(stderr, "Error reading or printing the file.\n");
-	}
-	else
-	{
-		printf("Number of letters read and printed: %zd\n", result);
-	}
-
-	return (0);
-}
-
